@@ -1,17 +1,41 @@
 import React from 'react';
 import './App.css';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import { CssBaseline, AppBar, Toolbar, Typography, Container } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    display: 'flex',
+    height: '100vh'
   },
+  grow: {
+    flexGrow: 1
+  },
+  toolbar: {
+    paddingRight: 24
+  },
+  toolbarIcon: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      padding: '0 8px',
+      ...theme.mixins.toolbar
+  },
+  appBarSpacer: theme.mixins.toolbar,
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+  content: {
+    flexGrow: 1,
+    overflow: 'auto'
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
 }));
 
@@ -20,14 +44,23 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <Grid container
-    direction="column"
-    justify="space-in-between"
-    alignItems="stretch">
-    <Paper className={classes.paper}>xs=12 sm=6</Paper>
-    <Paper className={classes.paper}>xs=12 sm=6</Paper>
-    <Paper className={classes.paper}>xs=12 sm=6</Paper>
-    <Paper className={classes.paper}>xs=12 sm=6</Paper>
-  </Grid>
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="absolute">
+        <Toolbar className={classes.toolbar}>
+          <Typography component="h1" variant="h6" noWrap className={classes.grow}>
+            Frame
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="xl" className={classes.container}>
+          <Paper className={classes.paper}>
+            Gay shit nvidia
+          </Paper>
+        </Container>
+      </main>
+    </div>
   );
 }
