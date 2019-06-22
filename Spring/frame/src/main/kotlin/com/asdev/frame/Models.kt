@@ -20,6 +20,7 @@ data class Commit(
 data class Project(
         @Id
         var id: String? = null,
+        var lastEditTime: Long = -1,
         var name: String,
         var description: String?,
         var autoCommit: Boolean,
