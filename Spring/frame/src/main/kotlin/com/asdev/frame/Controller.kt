@@ -14,6 +14,9 @@ class Controller {
     @Autowired
     private lateinit var projectRepo: ProjectsRepo
 
+    @Autowired
+    private lateinit var convertor: ColladaConvertor
+
     @RequestMapping("/project/init")
     fun initProject(@RequestParam("name", required = true) name: String, @RequestParam("desc", required = false) desc: String?): Project {
         val project = Project(null, System.currentTimeMillis(), name, desc, false, mutableListOf())
@@ -27,8 +30,8 @@ class Controller {
     }
 
     @RequestMapping("/project/get_all")
-    fun getProjects(): List<Project>? {
-        return projectRepo.findAllByOrderByLastEditTimeDesc()
+    fun getProjects(): List<Project> {
+        return projectRepo.findAllByOrderByLastEditTimeDesc()?: listOf()
     }
 
     @RequestMapping("/project/{project_id}/commit")
@@ -100,12 +103,22 @@ class Controller {
             return "{ \"success\": true, \"existing\": true }"
         }
 
+        if(!file.parentFile.exists())
+            return "{ \"success\": false }"
+
         project.lastEditTime = System.currentTimeMillis()
         projectRepo.save(project)
 
         file.createNewFile()
 
-        // TODO: begin conversion here
+        val tree = File(folder).walkTopDown().maxDepth(4)
+        for(f in tree) {
+            if(f.isDirectory)
+                continue
+            if(f.extension.equals("dae", ignoreCase = true)) {
+                convertor.convert(f)
+            }
+        }
 
         return "{ \"success\": true }"
     }
