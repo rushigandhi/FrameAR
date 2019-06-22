@@ -14,8 +14,28 @@ class ProjectsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        guard let url = URL(string: "http://192.168.137.1:8080/project/get_all") else { return }
+        
+        let session = URLSession.shared
+        session.dataTask(with: url) { (data, response, error) in
+            if let response = response {
+                print(response)
+            }
+            
+            if let data = data {
+                print(data)
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    print(json)
+                } catch {
+                    print(error)
+                }
+                
+            }
+            }.resume()
+        
     }
-    
 
     /*
     // MARK: - Navigation
