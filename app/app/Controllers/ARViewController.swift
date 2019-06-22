@@ -12,7 +12,31 @@ import ARKit
 
 class ARViewController: UIViewController, ARSCNViewDelegate {
 
+    var plane_only = false
+
     @IBOutlet var sceneView: ARSCNView!
+    
+    @IBAction func surfaceButton(_ sender: Any) {
+        plane_only = true
+    }
+    
+    @IBAction func annotationButton(_ sender: Any) {
+    }
+    
+    @IBAction func airButton(_ sender: Any) {
+        plane_only = false
+    }
+    @IBAction func compareButton(_ sender: Any) {
+    }
+    
+    @IBAction func commitButton(_ sender: Any) {
+    }
+    
+
+    @IBAction func filesButton(_ sender: Any) {
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,7 +117,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     
     @objc func addObject(withGestureRecognizer recognizer: UIGestureRecognizer) {
         let tapLocation = recognizer.location(in: sceneView)
-        let plane_only = false
         var hitTestResults = sceneView.hitTest(tapLocation, types: [.featurePoint,.existingPlaneUsingExtent])
         if (plane_only){
             hitTestResults = sceneView.hitTest(tapLocation, types: .existingPlaneUsingExtent)

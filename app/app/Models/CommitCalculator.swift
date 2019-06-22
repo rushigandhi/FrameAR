@@ -34,9 +34,7 @@ class CommitCalculator {
         }
         
         if topCommit == nil { return res }
-        
-        print(topCommit?.message)
-        
+                
         res.append(topCommit!)
         
         // find one where the parent commit is top commit

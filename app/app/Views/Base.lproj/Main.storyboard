@@ -21,10 +21,67 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
                                 <rect key="frame" x="0.0" y="0.0" width="1366" height="1004"/>
                             </arscnView>
+                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1" horizontalCompressionResistancePriority="1" axis="vertical" spacing="100" translatesAutoresizingMaskIntoConstraints="NO" id="ESJ-ir-Tje">
+                                <rect key="frame" x="80" y="171" width="61" height="683"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gmf-ob-Bwg">
+                                        <rect key="frame" x="0.0" y="0.0" width="61" height="33"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal" title="surface"/>
+                                        <connections>
+                                            <action selector="surfaceButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="7H1-bc-Mvj"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obm-ja-x5u">
+                                        <rect key="frame" x="0.0" y="133" width="61" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                        <state key="normal" title="air"/>
+                                        <connections>
+                                            <action selector="airButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="xBI-Rj-AdB"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wcp-9K-AUO">
+                                        <rect key="frame" x="0.0" y="263" width="61" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                        <state key="normal" title="annotate"/>
+                                        <connections>
+                                            <action selector="annotationButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="CQp-Jk-Sux"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zj7-3s-XCx">
+                                        <rect key="frame" x="0.0" y="393" width="61" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                        <state key="normal" title="compare"/>
+                                        <connections>
+                                            <action selector="compareButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="dOf-nG-qC9"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNy-c0-KpD">
+                                        <rect key="frame" x="0.0" y="523" width="61" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                        <state key="normal" title="commits"/>
+                                        <connections>
+                                            <action selector="commitButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="GDz-4S-meG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VbB-Xj-2q1">
+                                        <rect key="frame" x="0.0" y="653" width="61" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                        <state key="normal" title="files"/>
+                                        <connections>
+                                            <action selector="filesButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="3qf-Kv-C5e"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <variation key="heightClass=regular" baselineRelativeArrangement="NO"/>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
+                            <constraint firstItem="ESJ-ir-Tje" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="147" id="H1a-6E-k0v"/>
+                            <constraint firstItem="ESJ-ir-Tje" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" constant="80" id="OYq-Gv-kED"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="VpT-BR-CcM"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
@@ -37,7 +94,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2604" y="134"/>
+            <point key="canvasLocation" x="2603.8067349926791" y="133.59375"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="DAO-cc-1ol">
