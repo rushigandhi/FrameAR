@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		634BA99F22BE43D20035ACDC /* ARFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634BA99E22BE43D20035ACDC /* ARFunctions.swift */; };
 		7F28350622BDED8C008D7277 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F28350522BDED8C008D7277 /* AppDelegate.swift */; };
 		7F28350822BDED8C008D7277 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F28350722BDED8C008D7277 /* art.scnassets */; };
 		7F28350A22BDED8C008D7277 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F28350922BDED8C008D7277 /* ARViewController.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		634BA99E22BE43D20035ACDC /* ARFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARFunctions.swift; sourceTree = "<group>"; };
 		7F28350222BDED8C008D7277 /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F28350522BDED8C008D7277 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F28350722BDED8C008D7277 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -90,6 +92,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		634BA99D22BE43B20035ACDC /* ARUtils */ = {
+			isa = PBXGroup;
+			children = (
+				634BA99E22BE43D20035ACDC /* ARFunctions.swift */,
+			);
+			path = ARUtils;
+			sourceTree = "<group>";
+		};
 		7F2834F922BDED8C008D7277 = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +156,7 @@
 		7F5822DF22BE165B006F4DB6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				634BA99D22BE43B20035ACDC /* ARUtils */,
 				7F28353722BE0AE0008D7277 /* CommitsViewController.swift */,
 				7F28353522BE0ACE008D7277 /* ProjectsViewController.swift */,
 				7F28350922BDED8C008D7277 /* ARViewController.swift */,
@@ -309,6 +320,7 @@
 				7F5822E522BE191F006F4DB6 /* Commit.swift in Sources */,
 				7F5822E922BE2874006F4DB6 /* DataManager.swift in Sources */,
 				7F28353622BE0ACE008D7277 /* ProjectsViewController.swift in Sources */,
+				634BA99F22BE43D20035ACDC /* ARFunctions.swift in Sources */,
 				7F28353822BE0AE0008D7277 /* CommitsViewController.swift in Sources */,
 				7F5822E722BE21A4006F4DB6 /* Tag.swift in Sources */,
 				7F28350A22BDED8C008D7277 /* ARViewController.swift in Sources */,
@@ -489,13 +501,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XWC5K26Q8Y;
+				DEVELOPMENT_TEAM = 7YA9SZR3U5;
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = frame.ar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = rafit.frame.ar.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -507,13 +519,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XWC5K26Q8Y;
+				DEVELOPMENT_TEAM = 7YA9SZR3U5;
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = frame.ar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = rafit.frame.ar.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
