@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service
 @Service
 class FileSystem {
 
-    private val basePath = "storage"
+    companion object {
+        const val basePath = "C:\\Users\\shahb\\Documents\\frame\\storage\\"
+    }
 
     fun getProjectDir(project: Project): String {
         return "$basePath/${project.id}"

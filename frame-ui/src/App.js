@@ -1,21 +1,42 @@
 import React from 'react';
 import { Helmet } from 'react-helmet'
 import './App.css';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles';
-import graphGit from './Gitgraph'
+import Paper from '@material-ui/core/Paper';
+import { CssBaseline, AppBar, Toolbar, Typography, Container } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    display: 'flex',
+    height: '100vh'
   },
+  grow: {
+    flexGrow: 1
+  },
+  toolbar: {
+    paddingRight: 24
+  },
+  toolbarIcon: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      padding: '0 8px',
+      ...theme.mixins.toolbar
+  },
+  appBarSpacer: theme.mixins.toolbar,
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+  content: {
+    flexGrow: 1,
+    overflow: 'auto'
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
 }));
 
@@ -23,21 +44,23 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <helmet>
-        <style>{'body { background-color: #282c34; }'}</style>
-      </helmet>
+    <div className={classes.root}>
       <CssBaseline />
-      <Container maxWidth="sm">
-      <Grid>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>xs=12</Paper>
+      <AppBar position="absolute">
+        <Toolbar className={classes.toolbar}>
+          <Typography component="h1" variant="h6" noWrap className={classes.grow}>
+            Frame
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="xl" className={classes.container}>
           <Paper className={classes.paper}>
-            <graphGit/>
+            Gay shit nvidia
           </Paper>
-        </Grid>
-      </Grid>
-      </Container>
-    </React.Fragment>
+        </Container>
+      </main>
+    </div>
   );
 }

@@ -14,9 +14,12 @@ class Controller {
     @Autowired
     private lateinit var projectRepo: ProjectsRepo
 
+    @Autowired
+    private lateinit var convertor: ColladaConvertor
+
     @RequestMapping("/project/init")
     fun initProject(@RequestParam("name", required = true) name: String, @RequestParam("desc", required = false) desc: String?): Project {
-        val project = Project(null, name, desc, false, mutableListOf())
+        val project = Project(null, System.currentTimeMillis(), name, desc, false, mutableListOf())
         projectRepo.save(project)
         return project
     }
@@ -28,7 +31,7 @@ class Controller {
 
     @RequestMapping("/project/get_all")
     fun getProjects(): List<Project> {
-        return projectRepo.findAll()
+        return projectRepo.findAllByOrderByLastEditTimeDesc()?: listOf()
     }
 
     @RequestMapping("/project/{project_id}/commit")
@@ -41,7 +44,7 @@ class Controller {
 
         val commit: Commit
 
-        if(parentId == "INIT") {
+        if(parentId == "INIT" && project.commits.isEmpty()) {
             // the base commit
             commit = Commit(
                     message = message,
@@ -58,6 +61,7 @@ class Controller {
             )
         }
 
+        project.lastEditTime = System.currentTimeMillis()
         project.commits.add(commit)
 
         projectRepo.save(project)
@@ -75,6 +79,7 @@ class Controller {
 
         val commit = project.commits.find { it.id == commitId }?: return null
 
+        project.lastEditTime = System.currentTimeMillis()
         commit.tags.add(Tag(name))
 
         projectRepo.save(project)
@@ -91,13 +96,29 @@ class Controller {
         val commit = project.commits.find { it.id == commitId }?: return "{ \"success\": false }"
 
         val folder = fileSystem.getCommitDir(project, commit)
-        val hasProcessed = File(folder, ".processed").exists()
+        val file = File(folder, ".processed")
+        val hasProcessed = file.exists()
 
         if(hasProcessed) {
-            return "{ \"success\": true }"
+            return "{ \"success\": true, \"existing\": true }"
         }
 
-        // TODO: begin conversion here
+        if(!file.parentFile.exists())
+            return "{ \"success\": false }"
+
+        project.lastEditTime = System.currentTimeMillis()
+        projectRepo.save(project)
+
+        file.createNewFile()
+
+        val tree = File(folder).walkTopDown().maxDepth(4)
+        for(f in tree) {
+            if(f.isDirectory)
+                continue
+            if(f.extension.equals("dae", ignoreCase = true)) {
+                convertor.convert(f)
+            }
+        }
 
         return "{ \"success\": true }"
     }
@@ -115,7 +136,11 @@ class Controller {
         val project = p.get()
         val commit = project.commits.find { it.id == commitId }?: return "{ \"success\": false }"
 
-        val f = File(fileSystem.getCommitDir(project, commit))
+        project.lastEditTime = System.currentTimeMillis()
+        projectRepo.save(project)
+
+        val f = File(fileSystem.getCommitDir(project, commit), path)
+        f.mkdirs()
         file.transferTo(f)
 
         return "{ \"success\": true }"

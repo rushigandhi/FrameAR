@@ -1,0 +1,1 @@
+xcrun scntool --convert $1 --format c3d --output $2 --force-y-up --force-interleaved --look-for-pvrtc
