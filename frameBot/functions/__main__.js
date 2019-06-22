@@ -1,6 +1,6 @@
 const lib = require('lib')({token: process.env.STDLIB_SECRET_TOKEN});
 const { WebClient } = require('@slack/web-api');
-const web = new WebClient('xoxp-673121730528-661704789730-675274142118-afab6a6cee3609efcd47d3a2e69caf2f');
+const web = new WebClient('');
 /**
 * An HTTP endpoint that acts as a webhook for HTTP request event
 * @returns {object} workflow The result of your workflow steps
