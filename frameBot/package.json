@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "author": "adichha",
   "dependencies": {
-    "lib": "latest"
+    "lib": "latest",
+    "@slack/web-api": "^5.0.1"
   },
   "stdlib": {
     "name": "adichha/framebot",
