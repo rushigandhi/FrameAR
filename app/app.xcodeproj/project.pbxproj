@@ -17,6 +17,11 @@
 		7F28352822BDED8D008D7277 /* appUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F28352722BDED8D008D7277 /* appUITests.swift */; };
 		7F28353622BE0ACE008D7277 /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F28353522BE0ACE008D7277 /* ProjectsViewController.swift */; };
 		7F28353822BE0AE0008D7277 /* CommitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F28353722BE0AE0008D7277 /* CommitsViewController.swift */; };
+		7F5822E322BE16C0006F4DB6 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822E222BE16C0006F4DB6 /* Project.swift */; };
+		7F5822E522BE191F006F4DB6 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822E422BE191F006F4DB6 /* Commit.swift */; };
+		7F5822E722BE21A4006F4DB6 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822E622BE21A4006F4DB6 /* Tag.swift */; };
+		7F5822E922BE2874006F4DB6 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822E822BE2874006F4DB6 /* DataManager.swift */; };
+		7F5822EB22BE2CE9006F4DB6 /* CommitCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822EA22BE2CE9006F4DB6 /* CommitCalculator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +58,11 @@
 		7F28352922BDED8D008D7277 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7F28353522BE0ACE008D7277 /* ProjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
 		7F28353722BE0AE0008D7277 /* CommitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitsViewController.swift; sourceTree = "<group>"; };
+		7F5822E222BE16C0006F4DB6 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		7F5822E422BE191F006F4DB6 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
+		7F5822E622BE21A4006F4DB6 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		7F5822E822BE2874006F4DB6 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		7F5822EA22BE2CE9006F4DB6 /* CommitCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitCalculator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,15 +113,14 @@
 		7F28350422BDED8C008D7277 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				7F5822E122BE16AC006F4DB6 /* Models */,
+				7F5822E022BE1690006F4DB6 /* Views */,
+				7F5822DF22BE165B006F4DB6 /* Controllers */,
 				7F28350522BDED8C008D7277 /* AppDelegate.swift */,
 				7F28350722BDED8C008D7277 /* art.scnassets */,
-				7F28350922BDED8C008D7277 /* ARViewController.swift */,
-				7F28350B22BDED8C008D7277 /* Main.storyboard */,
 				7F28350E22BDED8D008D7277 /* Assets.xcassets */,
 				7F28351022BDED8D008D7277 /* LaunchScreen.storyboard */,
 				7F28351322BDED8D008D7277 /* Info.plist */,
-				7F28353522BE0ACE008D7277 /* ProjectsViewController.swift */,
-				7F28353722BE0AE0008D7277 /* CommitsViewController.swift */,
 			);
 			path = app;
 			sourceTree = "<group>";
@@ -132,6 +141,36 @@
 				7F28352922BDED8D008D7277 /* Info.plist */,
 			);
 			path = appUITests;
+			sourceTree = "<group>";
+		};
+		7F5822DF22BE165B006F4DB6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7F28353722BE0AE0008D7277 /* CommitsViewController.swift */,
+				7F28353522BE0ACE008D7277 /* ProjectsViewController.swift */,
+				7F28350922BDED8C008D7277 /* ARViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		7F5822E022BE1690006F4DB6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7F28350B22BDED8C008D7277 /* Main.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7F5822E122BE16AC006F4DB6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7F5822E222BE16C0006F4DB6 /* Project.swift */,
+				7F5822E422BE191F006F4DB6 /* Commit.swift */,
+				7F5822E622BE21A4006F4DB6 /* Tag.swift */,
+				7F5822E822BE2874006F4DB6 /* DataManager.swift */,
+				7F5822EA22BE2CE9006F4DB6 /* CommitCalculator.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,9 +305,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F5822EB22BE2CE9006F4DB6 /* CommitCalculator.swift in Sources */,
+				7F5822E522BE191F006F4DB6 /* Commit.swift in Sources */,
+				7F5822E922BE2874006F4DB6 /* DataManager.swift in Sources */,
 				7F28353622BE0ACE008D7277 /* ProjectsViewController.swift in Sources */,
 				7F28353822BE0AE0008D7277 /* CommitsViewController.swift in Sources */,
+				7F5822E722BE21A4006F4DB6 /* Tag.swift in Sources */,
 				7F28350A22BDED8C008D7277 /* ARViewController.swift in Sources */,
+				7F5822E322BE16C0006F4DB6 /* Project.swift in Sources */,
 				7F28350622BDED8C008D7277 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
