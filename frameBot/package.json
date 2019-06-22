@@ -1,0 +1,12 @@
+{
+  "name": "adichha/framebot",
+  "version": "0.0.0",
+  "author": "adichha",
+  "dependencies": {
+    "lib": "latest"
+  },
+  "stdlib": {
+    "name": "adichha/framebot",
+    "timeout": 20000
+  }
+}
