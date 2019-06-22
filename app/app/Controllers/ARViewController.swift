@@ -13,6 +13,7 @@ import ARKit
 class ARViewController: UIViewController, ARSCNViewDelegate {
 
     var plane_only = false
+    var currentAngleY: Float = 0.0
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -177,10 +178,30 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         if gesture.state == .ended { }
         
     }
+    @objc func rotateNode(withGestureRecognizer gesture: UIRotationGestureRecognizer){
+        let childNodes = sceneView.scene.rootNode.childNodes
+        let curNode = childNodes[0]
+        //1. Get The Current Rotation From The Gesture
+        let rotation = -Float(gesture.rotation)
+        
+        //2. If The Gesture State Has Changed Set The Nodes EulerAngles.y
+        if gesture.state == .changed{
+            
+            curNode.eulerAngles.y = currentAngleY + rotation
+        }
+        
+        //3. If The Gesture Has Ended Store The Last Angle Of The Cube
+        if(gesture.state == .ended) {
+            currentAngleY = curNode.eulerAngles.y
+            
+        }
+    }
     
     func addTapGestureToSceneView() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARViewController.addObject(withGestureRecognizer:)))
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(ARViewController.scaleObject(withGestureRecognizer:)))
+        let twistGestureRecognizer = UIRotationGestureRecognizer(target: self, action: #selector(ViewController.rotateNode(withGestureRecognizer:)))
+        sceneView.addGestureRecognizer(twistGestureRecognizer)
         sceneView.addGestureRecognizer(pinchGestureRecognizer)
         sceneView.addGestureRecognizer(tapGestureRecognizer)
     }
