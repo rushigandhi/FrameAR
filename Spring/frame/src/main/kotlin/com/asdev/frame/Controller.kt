@@ -153,7 +153,7 @@ class Controller {
         } catch (e: Exception) {
         }
 
-        sendSlackMessage("frame", "New commit *'${commit.message}'* to branch *$branch* by *${commit.author}*, click *<SOMETHING>* to check it out.")
+        sendSlackMessage("frame", "New commit *'${commit.message}'* to branch *$branch* by *${commit.author}*, click frame://${project.id}/${commit.id}/any.scn to check it out.")
 
         val tree = File(folder).walkTopDown().maxDepth(4)
         for(f in tree) {
