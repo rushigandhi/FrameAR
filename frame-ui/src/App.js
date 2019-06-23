@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet'
 import './App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -40,7 +41,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function App() {
-
   const classes = useStyles();
 
   return (
