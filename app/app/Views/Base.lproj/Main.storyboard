@@ -22,27 +22,21 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1366" height="1004"/>
                             </arscnView>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1" horizontalCompressionResistancePriority="1" axis="vertical" spacing="100" translatesAutoresizingMaskIntoConstraints="NO" id="ESJ-ir-Tje">
-                                <rect key="frame" x="80" y="171" width="61" height="683"/>
+                                <rect key="frame" x="80" y="171" width="125" height="548"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gmf-ob-Bwg">
-                                        <rect key="frame" x="0.0" y="0.0" width="61" height="33"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <state key="normal" title="surface"/>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="AmM-j0-A3X">
+                                        <rect key="frame" x="0.0" y="0.0" width="125" height="29"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <segments>
+                                            <segment title="Surface"/>
+                                            <segment title="Air"/>
+                                        </segments>
                                         <connections>
-                                            <action selector="surfaceButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="7H1-bc-Mvj"/>
+                                            <action selector="surfaceAirSegmentedControl:" destination="BV1-FR-VrT" eventType="valueChanged" id="j2Q-XC-p4e"/>
                                         </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obm-ja-x5u">
-                                        <rect key="frame" x="0.0" y="133" width="61" height="30"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                                        <state key="normal" title="air"/>
-                                        <connections>
-                                            <action selector="airButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="xBI-Rj-AdB"/>
-                                        </connections>
-                                    </button>
+                                    </segmentedControl>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wcp-9K-AUO">
-                                        <rect key="frame" x="0.0" y="263" width="61" height="30"/>
+                                        <rect key="frame" x="0.0" y="128" width="125" height="30"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                         <state key="normal" title="annotate"/>
                                         <connections>
@@ -50,7 +44,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zj7-3s-XCx">
-                                        <rect key="frame" x="0.0" y="393" width="61" height="30"/>
+                                        <rect key="frame" x="0.0" y="258" width="125" height="30"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                         <state key="normal" title="compare"/>
                                         <connections>
@@ -58,7 +52,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNy-c0-KpD">
-                                        <rect key="frame" x="0.0" y="523" width="61" height="30"/>
+                                        <rect key="frame" x="0.0" y="388" width="125" height="30"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                         <state key="normal" title="commits"/>
                                         <connections>
@@ -66,7 +60,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VbB-Xj-2q1">
-                                        <rect key="frame" x="0.0" y="653" width="61" height="30"/>
+                                        <rect key="frame" x="0.0" y="518" width="125" height="30"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                         <state key="normal" title="files"/>
                                         <connections>

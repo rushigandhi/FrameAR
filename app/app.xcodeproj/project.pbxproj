@@ -23,6 +23,7 @@
 		7F5822E722BE21A4006F4DB6 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822E622BE21A4006F4DB6 /* Tag.swift */; };
 		7F5822E922BE2874006F4DB6 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822E822BE2874006F4DB6 /* DataManager.swift */; };
 		7F5822EB22BE2CE9006F4DB6 /* CommitCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822EA22BE2CE9006F4DB6 /* CommitCalculator.swift */; };
+		7F5822EF22BEDAC2006F4DB6 /* 3D Objects in Resources */ = {isa = PBXBuildFile; fileRef = 7F5822EE22BEDAC2006F4DB6 /* 3D Objects */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		7F5822E622BE21A4006F4DB6 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		7F5822E822BE2874006F4DB6 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		7F5822EA22BE2CE9006F4DB6 /* CommitCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitCalculator.swift; sourceTree = "<group>"; };
+		7F5822EE22BEDAC2006F4DB6 /* 3D Objects */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "3D Objects"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 		7F28350422BDED8C008D7277 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				7F5822EE22BEDAC2006F4DB6 /* 3D Objects */,
 				7F5822E122BE16AC006F4DB6 /* Models */,
 				7F5822E022BE1690006F4DB6 /* Views */,
 				7F5822DF22BE165B006F4DB6 /* Controllers */,
@@ -289,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F28350822BDED8C008D7277 /* art.scnassets in Resources */,
+				7F5822EF22BEDAC2006F4DB6 /* 3D Objects in Resources */,
 				7F28351222BDED8D008D7277 /* LaunchScreen.storyboard in Resources */,
 				7F28350F22BDED8D008D7277 /* Assets.xcassets in Resources */,
 				7F28350D22BDED8C008D7277 /* Main.storyboard in Resources */,
@@ -501,13 +505,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7YA9SZR3U5;
+				DEVELOPMENT_TEAM = XWC5K26Q8Y;
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rafit.frame.ar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = rushi.frame.ar.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -519,13 +523,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7YA9SZR3U5;
+				DEVELOPMENT_TEAM = XWC5K26Q8Y;
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rafit.frame.ar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = rushi.frame.ar.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
