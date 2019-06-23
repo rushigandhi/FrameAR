@@ -12,6 +12,10 @@ import ARKit
 
 class ARViewController: UIViewController, ARSCNViewDelegate {
 
+    @IBOutlet weak var drawer: UIView!
+    @IBOutlet weak var drawerTitle: UILabel!
+    
+    var drawerOpen = false
     var plane_only = true
     var currentAngleY: Float = 0.0
 
@@ -50,21 +54,44 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         
     }
     @IBAction func annotationButton(_ sender: Any) {
+        if !drawerOpen {
+            drawer.isHidden = false
+            drawerTitle.text = "Comments"
+        }
     }
     @IBAction func compareButton(_ sender: Any) {
+        if !drawerOpen {
+            drawer.isHidden = false
+            drawerTitle.text = "Compare"
+        }
     }
     
     @IBAction func commitButton(_ sender: Any) {
+        if !drawerOpen {
+            drawer.isHidden = false
+            drawerTitle.text = "Commits"
+        }
     }
     
-
     @IBAction func filesButton(_ sender: Any) {
+        if !drawerOpen {
+            drawer.isHidden = false
+            drawerTitle.text = "Files"
+        }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if !drawerOpen {
+            drawer.isHidden = true
+        }
+        drawer.alpha = 0.8
 //        addAnnotation()
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,6 +125,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     // Anywhere in the air
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        drawerOpen = false
+        drawer.isHidden = true
+        
+
         if !plane_only {
 
             guard let touch = touches.first else { return }
@@ -181,6 +213,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     
     
     @objc func addModelToSceneViewSurface(withGestureRecognizer recognizer: UIGestureRecognizer) {
+        
+        drawerOpen = false
+        drawer.isHidden = true
+        
         if plane_only {
 
             let tapLocation = recognizer.location(in: sceneView)

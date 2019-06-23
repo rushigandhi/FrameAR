@@ -14,11 +14,13 @@ class Commit: Codable {
     var tags: [Tag]
     var parentId: String?
     var branchingName: String?
+    var files: [String]
     
-    init(id: String, message: String, tags: [Tag], parentId: String?, branchingName: String){
+    init(id: String, message: String, tags: [Tag], files: [String], parentId: String?, branchingName: String){
         self.id = id
         self.message = message
         self.tags = tags
+        self.files = files
         self.parentId = parentId
         self.branchingName = branchingName
     }
