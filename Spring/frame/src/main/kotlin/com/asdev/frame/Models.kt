@@ -12,6 +12,9 @@ data class Commit(
         var id: String = UUID.randomUUID().toString(),
         var message: String,
         var tags: MutableList<Tag>,
+        var author: String,
+        var files: MutableList<String>,
+        var comments: MutableList<String>,
         var parentId: String? = null,
         var branchingName: String? = null
 )
