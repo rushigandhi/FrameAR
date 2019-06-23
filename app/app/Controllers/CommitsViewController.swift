@@ -35,7 +35,6 @@ class CommitsViewController: UIViewController, UITableViewDataSource, UITableVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ar" {
             let destinationViewController = segue.destination as! ARViewController
-//            destinationViewController.selectedProjectIndex = sender as? Int ?? -1
         }
     }
     
@@ -63,7 +62,7 @@ class CommitsViewController: UIViewController, UITableViewDataSource, UITableVie
         print("You tapped cell number \(indexPath.row).")
         tableView.deselectRow(at: indexPath, animated: true)
         
-        performSegue(withIdentifier: "ar", sender: nil)
+        performSegue(withIdentifier: "ar", sender: selectedProjectIndex)
     }
 
     
