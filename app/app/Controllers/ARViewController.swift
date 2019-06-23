@@ -10,18 +10,40 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ARViewController: UIViewController, ARSCNViewDelegate {
+class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, UITableViewDataSource {
+    
+    var tableViewList:[String] = []
+    
+    var selectedProjectIndex: Int = -1
+    var selectedCommitIndex: Int = -1
+
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableViewList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // create a new cell if needed or reuse an old one
+        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
+        
+        // set the text from the data model
+        cell.textLabel?.text = tableViewList[indexPath.row]
+        
+        return cell
+    }
+    
 
     @IBOutlet weak var drawer: UIView!
     @IBOutlet weak var drawerTitle: UILabel!
     
     var drawerOpen = false
-    var plane_only = true
+    var plane_only = true 
     var currentAngleY: Float = 0.0
 
     @IBOutlet var sceneView: ARSCNView!
     
-
+    @IBOutlet weak var tableView: UITableView!
+    
     @IBAction func surfaceAirSegmentedControl(_ sender: UISegmentedControl) {
         
         if sender.selectedSegmentIndex == 0 {
@@ -57,12 +79,17 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Comments"
+            commentInputView.isHidden = false;
+            tableViewList = DataManager.shared.projects[selectedProjectIndex].commits[selectedCommitIndex].comments
+            tableView.reloadData()
         }
     }
     @IBAction func compareButton(_ sender: Any) {
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Compare"
+            commentInputView.isHidden = false;
+
         }
     }
     
@@ -70,6 +97,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Commits"
+            commentInputView.isHidden = false;
+            tableViewList = DataManager.shared.projects[selectedProjectIndex].commits.map{$0.message}
+            tableView.reloadData()
         }
     }
     
@@ -77,8 +107,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Files"
+            commentInputView.isHidden = false;
         }
     }
+    
+    
+    @IBOutlet weak var commentInputView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,12 +120,25 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             drawer.isHidden = true
         }
         drawer.alpha = 0.8
+        commentInputView.isHidden = true;
 //        addAnnotation()
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
+        
+        // Register the table view cell class and its reuse id
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        // (optional) include this line if you want to remove the extra empty cell divider lines
+        // self.tableView.tableFooterView = UIView()
+        
+        // This view controller itself will provide the delegate methods and row data for the table view.
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableViewList = DataManager.shared.projects.map{$0.name}
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -129,7 +176,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         drawerOpen = false
         drawer.isHidden = true
         
-
         if !plane_only {
 
             guard let touch = touches.first else { return }

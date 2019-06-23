@@ -95,7 +95,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1JH-uN-f6U">
-                                                <rect key="frame" x="0.0" y="32" width="261" height="38"/>
+                                                <rect key="frame" x="8" y="32" width="253" height="38"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
@@ -125,9 +125,11 @@
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
+                        <outlet property="commentInputView" destination="Qhj-Na-LS5" id="ERY-nV-1mM"/>
                         <outlet property="drawer" destination="GEO-PO-wsn" id="653-NO-j1W"/>
                         <outlet property="drawerTitle" destination="n87-qF-cAT" id="sGf-d3-bEa"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                        <outlet property="tableView" destination="E1y-ib-cOl" id="bwo-Jc-NTS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
