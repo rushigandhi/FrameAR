@@ -391,8 +391,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
                     
                     
                 let objectNode = objectScene.rootNode.childNodes[0]
-                let material = SCNMaterial()
-                objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
                 objectNode.scale = SCNVector3(x: 0.00254, y: 0.00254, z: 0.00254)
                 objectNode.eulerAngles = SCNVector3(x: 0, y: 0, z: 0)
                 //        guard let objectScene = try? SCNScene(url: object_path),
@@ -523,8 +521,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
 //
                     
                     
-                    
-
+            
                     var opacity = 1.0
                     
                     if nodes.count > 1 {
@@ -585,20 +582,19 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     }
 
 
+    
     @objc func scaleObject(withGestureRecognizer gesture: UIPinchGestureRecognizer) {
-        let childNodes = sceneView.scene.rootNode.childNodes
-        let curNode = childNodes[0]
-        let nodeToScale = curNode
-        if gesture.state == .changed {
+        let nodes = sceneView.scene.rootNode.childNodes
+        print(gesture.scale)
 
+        for nodeToScale in nodes {
             let pinchScaleX: CGFloat = gesture.scale * CGFloat((nodeToScale.scale.x))
             let pinchScaleY: CGFloat = gesture.scale * CGFloat((nodeToScale.scale.y))
             let pinchScaleZ: CGFloat = gesture.scale * CGFloat((nodeToScale.scale.z))
             nodeToScale.scale = SCNVector3Make(Float(pinchScaleX), Float(pinchScaleY), Float(pinchScaleZ))
             gesture.scale = 1
-
         }
-        if gesture.state == .ended { }
+
 
     }
 }
