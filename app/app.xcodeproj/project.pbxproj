@@ -24,6 +24,7 @@
 		7F5822E922BE2874006F4DB6 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822E822BE2874006F4DB6 /* DataManager.swift */; };
 		7F5822EB22BE2CE9006F4DB6 /* CommitCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5822EA22BE2CE9006F4DB6 /* CommitCalculator.swift */; };
 		7F5822EF22BEDAC2006F4DB6 /* 3D Objects in Resources */ = {isa = PBXBuildFile; fileRef = 7F5822EE22BEDAC2006F4DB6 /* 3D Objects */; };
+		7F5822F122BF78E4006F4DB6 /* icon-87.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5822F022BF78E3006F4DB6 /* icon-87.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		7F5822E822BE2874006F4DB6 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		7F5822EA22BE2CE9006F4DB6 /* CommitCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitCalculator.swift; sourceTree = "<group>"; };
 		7F5822EE22BEDAC2006F4DB6 /* 3D Objects */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "3D Objects"; sourceTree = "<group>"; };
+		7F5822F022BF78E3006F4DB6 /* icon-87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-87.png"; path = "../../graphics/icon-assets/app-icons.appiconset/icon-87.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				7F28350522BDED8C008D7277 /* AppDelegate.swift */,
 				7F28350722BDED8C008D7277 /* art.scnassets */,
 				7F28350E22BDED8D008D7277 /* Assets.xcassets */,
+				7F5822F022BF78E3006F4DB6 /* icon-87.png */,
 				7F28351022BDED8D008D7277 /* LaunchScreen.storyboard */,
 				7F28351322BDED8D008D7277 /* Info.plist */,
 			);
@@ -296,6 +299,7 @@
 				7F28351222BDED8D008D7277 /* LaunchScreen.storyboard in Resources */,
 				7F28350F22BDED8D008D7277 /* Assets.xcassets in Resources */,
 				7F28350D22BDED8C008D7277 /* Main.storyboard in Resources */,
+				7F5822F122BF78E4006F4DB6 /* icon-87.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,7 +515,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rushi.frame.ar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rushi.frame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -529,7 +533,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rushi.frame.ar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rushi.frame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

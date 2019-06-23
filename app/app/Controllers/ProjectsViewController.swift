@@ -40,8 +40,24 @@ class ProjectsViewController: UIViewController, UITableViewDelegate, UITableView
         if segue.identifier == "commits" {
             let destinationViewController = segue.destination as! CommitsViewController
             destinationViewController.selectedProjectIndex = sender as? Int ?? -1
+        } else if segue.identifier == "ar2" {
+            let destinationViewController = segue.destination as! ARViewController
+            let prelaunch = sender as! Prelaunch
+            
+            guard let project = DataManager.shared.projects.first(where: { $0.id == prelaunch.projectId }) else { return }
+            guard let commit = project.commits.first(where: { $0.id == prelaunch.commitId}) else { return }
+            let branch = CommitCalculator.getCommitBranch(project: project, commit: commit)
+            
+            destinationViewController.selectedCommit = commit
+            destinationViewController.selectedProjectIndex = DataManager.shared.projects.firstIndex(where: { $0.id == project.id })!
+            destinationViewController.branch = branch
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,6 +86,12 @@ class ProjectsViewController: UIViewController, UITableViewDelegate, UITableView
                     let projs = try decoder.decode([Project].self, from: data)
                     
                     DataManager.shared.projects = projs
+                    
+                    if let prelaunch = DataManager.prelaunch {
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "ar2", sender: prelaunch)
+                        }
+                    }
                     
                     DispatchQueue.main.async {
                         self.tableView.reloadData()

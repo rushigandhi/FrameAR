@@ -208,6 +208,7 @@
                     <connections>
                         <outlet property="tableView" destination="H5J-ug-0pB" id="p5x-0L-Vej"/>
                         <segue destination="spB-K5-0i9" kind="show" identifier="commits" id="v7d-sP-5Oz"/>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="ar2" id="fG4-an-OXM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CCs-cA-nVw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -278,4 +279,7 @@
             <point key="canvasLocation" x="1412.5915080527086" y="133.59375"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="fG4-an-OXM"/>
+    </inferredMetricsTieBreakers>
 </document>

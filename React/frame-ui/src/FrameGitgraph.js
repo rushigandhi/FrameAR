@@ -152,7 +152,7 @@ class FrameGitgraph extends React.Component {
                         tag: tag,
                         body: this.produceBody(project, b)
                     });
-                    this.createGraph0(graph, bobj, b, commits)
+                    this.createGraph0(graph, bobj, b, commits, project)
                 })
             }
 
