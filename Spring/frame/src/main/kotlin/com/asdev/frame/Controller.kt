@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.net.URL
+import java.net.URLEncoder
 
 @RestController
+@CrossOrigin(origins = ["http://192.168.137.1:8080", "http://localhost:3000"])
 class Controller {
 
     @Autowired
@@ -35,7 +38,7 @@ class Controller {
     }
 
     @RequestMapping("/project/{project_id}/commit")
-    fun createCommit(@RequestParam("message") message: String, @PathVariable("project_id") projectId: String, @RequestParam("parent") parentId: String, @RequestParam("branching", required = false) branching: String?): Commit? {
+    fun createCommit(@RequestParam("message") message: String, @PathVariable("project_id") projectId: String, @RequestParam("parent") parentId: String, @RequestParam("branching", required = false) branching: String?, @RequestParam("author", required = false) author: String?): Commit? {
         val p = projectRepo.findById(projectId)
 
         if(!p.isPresent) return null
@@ -50,6 +53,9 @@ class Controller {
                     message = message,
                     tags = mutableListOf(),
                     parentId = null,
+                    files = mutableListOf(),
+                    author = author?: "Default <na>",
+                    comments = mutableListOf(),
                     branchingName = "master"
             )
         } else {
@@ -57,12 +63,35 @@ class Controller {
                     message = message,
                     tags = mutableListOf(),
                     parentId = parentId,
+                    files = mutableListOf(),
+                    author = author?: "Default <na>",
+                    comments = mutableListOf(),
                     branchingName = branching
             )
         }
 
         project.lastEditTime = System.currentTimeMillis()
         project.commits.add(commit)
+
+        projectRepo.save(project)
+
+        return commit
+    }
+
+    @RequestMapping("/project/{project_id}/comment/{commit_id}")
+    fun addComment(@PathVariable("project_id") projectId: String, @PathVariable("commit_id") commitId: String, @RequestParam("comment") comment: String): Commit? {
+        val p = projectRepo.findById(projectId)
+
+        if(!p.isPresent) return null
+
+        val project = p.get()
+
+        val commit = project.commits.find { it.id == commitId }?: return null
+
+        project.lastEditTime = System.currentTimeMillis()
+        commit.comments.add(comment)
+
+        sendSlackMessage("frame", "New comment on *${commit.message}* by *${commit.author}* in *${project.name}*: *$comment*")
 
         projectRepo.save(project)
 
@@ -87,14 +116,16 @@ class Controller {
         return commit
     }
 
-    @RequestMapping("/project/{project_id}/process/{commit_id}")
-    fun postProcess(@PathVariable("project_id") projectId: String, @PathVariable("commit_id") commitId: String): String {
-        val p = projectRepo.findById(projectId)
+    private val messageUrl = "https://adichha.api.stdlib.com/http-project@dev/"
 
-        if(!p.isPresent) return "{ \"success\": false }"
-        val project = p.get()
-        val commit = project.commits.find { it.id == commitId }?: return "{ \"success\": false }"
+    private fun sendSlackMessage(channel: String, message: String) {
+        val json = "{ \"project\": \"$channel\", \"text\": \"$message\" }"
+        val encoded = URLEncoder.encode(json, "UTF8")
+        val request = "$messageUrl?obj=$encoded"
+        URL(request).openConnection().getInputStream().close()
+    }
 
+    private fun process(project: Project, commit: Commit): String {
         val folder = fileSystem.getCommitDir(project, commit)
         val file = File(folder, ".processed")
         val hasProcessed = file.exists()
@@ -111,6 +142,19 @@ class Controller {
 
         file.createNewFile()
 
+        var branch = "master"
+
+        var current = commit
+        try {
+            while (current.branchingName == null) {
+                current = project.commits.find { it.id == current.parentId }!!
+            }
+            branch = current.branchingName?: "master"
+        } catch (e: Exception) {
+        }
+
+        sendSlackMessage("frame", "New commit *'${commit.message}'* to branch *$branch* by *${commit.author}*, click *<SOMETHING>* to check it out.")
+
         val tree = File(folder).walkTopDown().maxDepth(4)
         for(f in tree) {
             if(f.isDirectory)
@@ -121,6 +165,17 @@ class Controller {
         }
 
         return "{ \"success\": true }"
+    }
+
+    @RequestMapping("/project/{project_id}/process/{commit_id}")
+    fun postProcess(@PathVariable("project_id") projectId: String, @PathVariable("commit_id") commitId: String): String {
+        val p = projectRepo.findById(projectId)
+
+        if(!p.isPresent) return "{ \"success\": false }"
+        val project = p.get()
+        val commit = project.commits.find { it.id == commitId }?: return "{ \"success\": false }"
+
+        return process(project, commit)
     }
 
     /**
@@ -137,12 +192,13 @@ class Controller {
         val commit = project.commits.find { it.id == commitId }?: return "{ \"success\": false }"
 
         project.lastEditTime = System.currentTimeMillis()
+        commit.files.add(path)
         projectRepo.save(project)
 
         val f = File(fileSystem.getCommitDir(project, commit), path)
         f.mkdirs()
         file.transferTo(f)
 
-        return "{ \"success\": true }"
+        return process(project, commit)
     }
 }
