@@ -22,6 +22,18 @@ class CommitCalculator {
         return res
     }
     
+    static func getCommitBranch(project: Project, commit: Commit) -> String {
+        var current = commit
+
+        while current.branchingName == nil {
+            // find parent of this commit
+            guard let parent = project.commits.first(where: { $0.id == current.parentId }) else { return "master" }
+            current = parent
+        }
+
+        return current.branchingName!
+    }
+    
     static func getCommitsOfBranch(project: Project, branch: String) -> [Commit] {
         var res = [Commit]()
         
@@ -34,7 +46,7 @@ class CommitCalculator {
         }
         
         if topCommit == nil { return res }
-                
+        
         res.append(topCommit!)
         
         // find one where the parent commit is top commit

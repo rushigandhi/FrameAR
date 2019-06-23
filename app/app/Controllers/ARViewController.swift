@@ -19,6 +19,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     var branch: String = "master"
     var loadedSCNS = [String: URL]()
     var loadedSCN: URL?
+    var compareSCN: URL?
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -42,6 +43,23 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         switch drawerTitle.text {
             case "Comments":
                 break;
+            case "Compare":
+            
+                let commitMessages = DataManager.shared.projects[selectedProjectIndex].commits.map{$0.message}
+                let index = commitMessages.firstIndex(of: tableViewList[indexPath.row])
+                let compareCommit = DataManager.shared.projects[selectedProjectIndex].commits[index ?? 0]
+                closeDrawerBtn.sendActions(for: .touchUpInside)
+                
+                if let file = compareCommit.files.randomElement() {
+                    self.compareSCN = self.loadedSCNS[compareCommit.id + "/" + file]
+                    print("Compare scn is: ")
+                    print(self.compareSCN)
+                }
+                
+                break;
+                
+                
+            break;
             case "Commits":
                 let commitMessages = DataManager.shared.projects[selectedProjectIndex].commits.map{$0.message}
                 let index = commitMessages.firstIndex(of: tableViewList[indexPath.row])
@@ -116,6 +134,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     
     @IBOutlet weak var addCommentButton: UIButton!
     @IBAction func addCommentButtonOnClick(_ sender: Any) {
+        compareSCN = nil
+        
         tableViewList.append(commentInput.text ?? "")
         selectedCommit!.comments.append(commentInput.text ?? "")
         
@@ -136,6 +156,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     }
 
     @IBAction func annotationButton(_ sender: Any) {
+        compareSCN = nil
+
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Comments"
@@ -146,15 +168,26 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         }
     }
     @IBAction func compareButton(_ sender: Any) {
+        compareSCN = nil
+
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Compare"
             commentInput.isHidden = true;
             addCommentButton.isHidden = true;
+            
+            let project = DataManager.shared.projects[selectedProjectIndex]
+            
+            let commits = CommitCalculator.getCommitsOfBranch(project: project, branch: branch)
+            
+            tableViewList = commits.map{$0.message}
+            tableView.reloadData()
         }
     }
     
     @IBAction func commitButton(_ sender: Any) {
+        compareSCN = nil
+
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Commits"
@@ -171,6 +204,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     }
     
     @IBAction func filesButton(_ sender: Any) {
+        compareSCN = nil
+
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Files"
@@ -321,6 +356,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         sceneView.automaticallyUpdatesLighting = true
     }
     @IBAction func closeDrawerButton(_ sender: Any) {
+        compareSCN = nil
         drawerOpen = false
         drawer.isHidden = true
     }
@@ -351,14 +387,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
             //        print(object_url)
             //        let object_path =  "art.scnassets/" + "model" + ".scn"
                 do {
-                print(object_path)
                 let objectScene = try SCNScene.init(url: object_path , options: nil)
-                
+                    
+                    
                 let objectNode = objectScene.rootNode.childNodes[0]
-                let material = SCNMaterial()
-                objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
                 objectNode.scale = SCNVector3(x: 0.00254, y: 0.00254, z: 0.00254)
-                objectNode.eulerAngles = SCNVector3(x: 90, y: 90, z: 90)
+                objectNode.eulerAngles = SCNVector3(x: 0, y: 0, z: 0)
                 //        guard let objectScene = try? SCNScene(url: object_path),
                 //            let objectNode = objectScene.rootNode.childNode(withName: object, recursively: false)
                 //            else { return }
@@ -432,6 +466,21 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         
     }
     
+    func setMaterialColor(node: SCNNode, color: UIColor) {
+        if node.geometry != nil {
+            let original = node.geometry!.firstMaterial
+
+            let copy = original?.copy() as? SCNMaterial
+            copy?.diffuse.contents = color
+            node.geometry!.firstMaterial = copy
+            
+            return
+        }
+        for c in node.childNodes {
+            setMaterialColor(node: c, color: color)
+        }
+    }
+    
     
     @objc func addModelToSceneViewSurface(withGestureRecognizer recognizer: UIGestureRecognizer) {
         
@@ -449,40 +498,66 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
             let z = translation.z
             if (loadedSCN != nil){
                 let object_path = loadedSCN!
-                //        print(object_url)
-                //        let object_path =  "art.scnassets/" + "model" + ".scn"
+                
                 do {
-                    let objectScene = try SCNScene.init(url: object_path, options: nil)
+                    var options = [SCNSceneSource.LoadingOption : Any]()
+                    options[SCNSceneSource.LoadingOption.convertToYUp] = true
+                    let objectScene = try SCNScene.init(url: object_path, options: options)
+                    
+                    var nodes = [SCNNode]()
                     
                     let objectNode = objectScene.rootNode.childNodes[0]
-                    let material = SCNMaterial()
-                    objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
-                    objectNode.scale = SCNVector3(x: 0.00254, y: 0.00254, z: 0.00254)
-                    objectNode.eulerAngles = SCNVector3(x: 90, y: 90, z: 90)
-                    //        guard let objectScene = try? SCNScene(url: object_path),
-                    //            let objectNode = objectScene.rootNode.childNode(withName: object, recursively: false)
-                    //            else { return }
                     
-                    objectNode.position = SCNVector3(x,y,z)
+                    nodes.append(objectNode)
                     
-                    //Lighting
-                    let spotLight = SCNLight()
-                    spotLight.type = SCNLight.LightType.probe
-                    spotLight.spotInnerAngle = 30.0
-                    spotLight.spotOuterAngle = 80.0
-                    spotLight.castsShadow = true
-                    objectNode.light = spotLight
-                    objectNode.name = "surface"
-                    
-                    
-                    
-                    //Add max 1 object
-                    let childNodes = sceneView.scene.rootNode.childNodes
-                    if (childNodes.isEmpty){
-                        sceneView.scene.rootNode.addChildNode(objectNode)
-                    } else{
-                        sceneView.scene.rootNode.replaceChildNode(childNodes[0], with: objectNode)
+                    if let compareObj = compareSCN {
+                        let compareScene = try? SCNScene.init(url: compareObj, options: options)
+                        if let node = compareScene?.rootNode.childNodes[0] {
+                            nodes.append(node)
+                        }
                     }
+                    
+//                    objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+//
+                    
+                    
+            
+                    var opacity = 1.0
+                    
+                    if nodes.count > 1 {
+                        setMaterialColor(node: nodes[0], color: UIColor.red)
+                        setMaterialColor(node: nodes[1], color: UIColor.green)
+                        opacity = 0.8
+                    }
+                    
+                    var shift = 0.0
+                    for node in nodes {
+                        node.scale = SCNVector3(x: 0.00254, y: 0.00254, z: 0.00254)
+                        node.eulerAngles = SCNVector3(x: 0, y: 0, z: 0)
+                        let xgay = x + Float(shift)
+                        let ygay = y + Float(shift)
+                        let zgay = z - Float(shift)
+                        node.position = SCNVector3(x: xgay, y: ygay, z: zgay)
+                        node.name = "surface"
+                        node.opacity = CGFloat(opacity)
+                        shift += 0.006
+                    }
+                    
+                    let orig = nodes[0].scale
+                    nodes[0].scale = SCNVector3(x: 1.1 * orig.x, y: 1.1 * orig.y, z: 1.1 * orig.z)
+                    
+                    var root = sceneView.scene.rootNode
+                    root.enumerateChildNodes { (node, b) in
+                        if node.name == "surface" {
+                            node.removeFromParentNode()
+                        }
+                    }
+                    
+                    for node in nodes {
+                        print(nodes.count)
+                        sceneView.scene.rootNode.addChildNode(node)
+                    }
+
                 } catch {
                     print("failed to make obj scene")
                     print(error)
@@ -507,20 +582,19 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     }
 
 
+    
     @objc func scaleObject(withGestureRecognizer gesture: UIPinchGestureRecognizer) {
-        let childNodes = sceneView.scene.rootNode.childNodes
-        let curNode = childNodes[0]
-        let nodeToScale = curNode
-        if gesture.state == .changed {
+        let nodes = sceneView.scene.rootNode.childNodes
+        print(gesture.scale)
 
+        for nodeToScale in nodes {
             let pinchScaleX: CGFloat = gesture.scale * CGFloat((nodeToScale.scale.x))
             let pinchScaleY: CGFloat = gesture.scale * CGFloat((nodeToScale.scale.y))
             let pinchScaleZ: CGFloat = gesture.scale * CGFloat((nodeToScale.scale.z))
             nodeToScale.scale = SCNVector3Make(Float(pinchScaleX), Float(pinchScaleY), Float(pinchScaleZ))
             gesture.scale = 1
-
         }
-        if gesture.state == .ended { }
+
 
     }
 }
