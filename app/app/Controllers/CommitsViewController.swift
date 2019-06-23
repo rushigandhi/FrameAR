@@ -35,7 +35,11 @@ class CommitsViewController: UIViewController, UITableViewDataSource, UITableVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ar" {
             let destinationViewController = segue.destination as! ARViewController
-//            destinationViewController.selectedProjectIndex = sender as? Int ?? -1
+
+            destinationViewController.selectedProjectIndex = selectedProjectIndex as? Int ?? -1
+            destinationViewController.selectedCommit = sender as? Commit
+            destinationViewController.branch = currentBranch
+
         }
     }
     
@@ -63,7 +67,7 @@ class CommitsViewController: UIViewController, UITableViewDataSource, UITableVie
         print("You tapped cell number \(indexPath.row).")
         tableView.deselectRow(at: indexPath, animated: true)
         
-        performSegue(withIdentifier: "ar", sender: nil)
+        performSegue(withIdentifier: "ar", sender: currentCommits[indexPath.row] )
     }
 
     
@@ -91,6 +95,7 @@ class CommitsViewController: UIViewController, UITableViewDataSource, UITableVie
         
         branchPicker.delegate = self
         branchPicker.dataSource = self
+
     }
     
     

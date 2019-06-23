@@ -1,0 +1,13 @@
+{
+  "name": "adichha/framebot",
+  "version": "0.0.0",
+  "author": "adichha",
+  "dependencies": {
+    "lib": "latest",
+    "@slack/web-api": "^5.0.1"
+  },
+  "stdlib": {
+    "name": "adichha/framebot",
+    "timeout": 20000
+  }
+}
