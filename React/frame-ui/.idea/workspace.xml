@@ -2,29 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1320145c-5269-440f-aeb5-ed0670d4d5e2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/AnnotateView.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/App.test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Branch.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FrameGitgraph.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ProjectsDialog.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/WiredTiger.turtle" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/WiredTiger.turtle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/WiredTiger.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/WiredTiger.wt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/collection-0-4840588668578501099.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/collection-0-4840588668578501099.wt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/collection-2-7970919489895339673.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/collection-2-7970919489895339673.wt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/collection-4-7970919489895339673.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/collection-4-7970919489895339673.wt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../MongoDBData/index-1-4840588668578501099.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/index-1-4840588668578501099.wt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/index-3-7970919489895339673.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/index-3-7970919489895339673.wt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/index-5-7970919489895339673.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/index-5-7970919489895339673.wt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/index-6-7970919489895339673.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/index-6-7970919489895339673.wt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MongoDBData/journal/WiredTigerLog.0000000004" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/mongod.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/mongod.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../MongoDBData/sizeStorer.wt" beforeDir="false" afterPath="$PROJECT_DIR$/../../MongoDBData/sizeStorer.wt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FrameGitgraph.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrameGitgraph.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/frame/src/main/kotlin/com/asdev/frame/Controller.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/frame/src/main/kotlin/com/asdev/frame/Controller.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Spring/frame/src/main/kotlin/com/asdev/frame/Models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/frame/src/main/kotlin/com/asdev/frame/Models.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Spring/frame/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/frame/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frame-ui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frame-ui/package-lock.json" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -86,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FrameGitgraph.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="45" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
+            <state relative-caret-position="-360">
+              <caret line="153" column="23" lean-forward="true" selection-start-line="153" selection-start-column="23" selection-end-line="153" selection-end-column="23" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -98,10 +88,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
+            <state relative-caret-position="-1152">
               <caret line="144" column="38" selection-start-line="144" selection-start-column="38" selection-end-line="144" selection-end-column="38" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -142,8 +132,8 @@
         <option value="$PROJECT_DIR$/src/ProjectsDialog.js" />
         <option value="$PROJECT_DIR$/src/Branch.js" />
         <option value="$PROJECT_DIR$/src/AnnotateView.js" />
-        <option value="$PROJECT_DIR$/src/FrameGitgraph.js" />
         <option value="$PROJECT_DIR$/src/App.js" />
+        <option value="$PROJECT_DIR$/src/FrameGitgraph.js" />
       </list>
     </option>
   </component>
@@ -155,7 +145,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -186,6 +176,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -241,15 +232,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1561233919889</updated>
-      <workItem from="1561233921336" duration="33872000" />
+      <workItem from="1561233921336" duration="34486000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33872000" />
+    <option name="totallyTimeSpent" value="34486000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="npm" side_tool="true" />
@@ -340,23 +331,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrameGitgraph.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="45" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
+        <state relative-caret-position="-1152">
           <caret line="144" column="38" selection-start-line="144" selection-start-column="38" selection-end-line="144" selection-end-column="38" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
             <marker date="1561271053816" expanded="true" signature="4387:4428" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FrameGitgraph.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-360">
+          <caret line="153" column="23" lean-forward="true" selection-start-line="153" selection-start-column="23" selection-end-line="153" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
