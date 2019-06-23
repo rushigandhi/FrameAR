@@ -17,7 +17,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     var selectedProjectIndex: Int = -1
     var selectedCommit: Commit? = nil
     var branch: String = "master"
-    var loadedSCNS = [URL]()
+    var loadedSCNS = [String: URL]()
+    var loadedSCN: URL?
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -32,6 +33,40 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         cell.textLabel?.text = tableViewList[indexPath.row]
         
         return cell
+    }
+    // method to run when table view cell is tapped
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("You tapped cell number \(indexPath.row).")
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        switch drawerTitle.text {
+            case "Comments":
+                break;
+            case "Commits":
+                let commitMessages = DataManager.shared.projects[selectedProjectIndex].commits.map{$0.message}
+                let index = commitMessages.firstIndex(of: tableViewList[indexPath.row])
+                selectedCommit = DataManager.shared.projects[selectedProjectIndex].commits[index ?? 0]
+                closeDrawerBtn.sendActions(for: .touchUpInside)
+                
+                if let file = self.selectedCommit!.files.randomElement() {
+                    self.loadedSCN = self.loadedSCNS[self.selectedCommit!.id + "/" + file]
+                    print("Loaded scn is: ")
+                    print(self.loadedSCN)
+                }
+                
+                break;
+            case "Files":
+                let file = tableViewList[indexPath.row]
+                let id = selectedCommit!.id
+                
+                loadedSCN = loadedSCNS[id + "/" + file]
+                
+                closeDrawerBtn.sendActions(for: .touchUpInside)
+                break;
+            default:
+                print("hello world!")
+        }
+        tableView.reloadData()
     }
     
 
@@ -75,13 +110,37 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
                 }
             }
         }
-        
     }
+    
+    @IBOutlet weak var commentInput: UITextField!
+    
+    @IBOutlet weak var addCommentButton: UIButton!
+    @IBAction func addCommentButtonOnClick(_ sender: Any) {
+        tableViewList.append(commentInput.text ?? "")
+        selectedCommit!.comments.append(commentInput.text ?? "")
+        
+        if let comment = commentInput.text {
+            postComment(comment: comment)
+        }
+        commentInput.text = ""
+        
+        tableView.reloadData()
+    }
+    
+    func postComment(comment: String) {
+        let encoded = comment.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        let path = "http://192.168.137.1:8080/project/" + DataManager.shared.projects[selectedProjectIndex].id + "/comment/" + selectedCommit!.id + "?comment=" + encoded!
+        
+        let url = URL(string: path)!
+        URLSession.shared.dataTask(with: URLRequest(url: url)).resume()
+    }
+
     @IBAction func annotationButton(_ sender: Any) {
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Comments"
-            commentInputView.isHidden = false;
+            commentInput.isHidden = false;
+            addCommentButton.isHidden = false;
             tableViewList = selectedCommit!.comments
             tableView.reloadData()
         }
@@ -90,8 +149,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Compare"
-            commentInputView.isHidden = false;
-
+            commentInput.isHidden = true;
+            addCommentButton.isHidden = true;
         }
     }
     
@@ -99,7 +158,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Commits"
-            commentInputView.isHidden = false;
+            commentInput.isHidden = true;
+            addCommentButton.isHidden = true;
             
             let project = DataManager.shared.projects[selectedProjectIndex]
             
@@ -114,14 +174,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         if !drawerOpen {
             drawer.isHidden = false
             drawerTitle.text = "Files"
-            commentInputView.isHidden = false;
+            commentInput.isHidden = true;
+            addCommentButton.isHidden = true;
             tableViewList = selectedCommit!.files
             tableView.reloadData()
         }
     }
-    
-    
-    @IBOutlet weak var commentInputView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,9 +187,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
             drawer.isHidden = true
         }
         drawer.alpha = 0.8
-        commentInputView.isHidden = true;
 //        addAnnotation()
-        
+        commentInput.isHidden = true;
+        addCommentButton.isHidden = true;
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
@@ -151,17 +209,35 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         
         let project = DataManager.shared.projects[selectedProjectIndex]
         
-        let basePath = "http://192.168.137.1:8080/" + project.id + "/" + selectedCommit!.id + "/"
+        let taskGroup = DispatchGroup()
         
-        for fileName in selectedCommit!.files {
-            loadSCN(basePath + fileName)
+        self.showSpinner(onView: self.view)
+        
+        for commit in project.commits {
+            let basePath = "http://192.168.137.1:8080/" + project.id + "/" + commit.id + "/"
+            
+            for fileName in commit.files {
+                loadSCN(fileUrl: basePath + fileName, commitId: commit.id, file: fileName, group: taskGroup)
+            }
         }
+
+        
+        taskGroup.notify(queue: DispatchQueue.main) {
+            
+            if let file = self.selectedCommit!.files.randomElement() {
+                self.loadedSCN = self.loadedSCNS[self.selectedCommit!.id + "/" + file]
+                print("Loaded scn is: ")
+                print(self.loadedSCN)
+            }
+            
+            self.removeSpinner()
+        }
+        
     }
     
-    func loadSCN(_ fileUrl: String) {
+    func loadSCN(fileUrl: String, commitId: String, file: String, group: DispatchGroup) {
         if let url = URL(string: fileUrl) {
-            print(url)
-            
+            group.enter()
             let sessionConfig = URLSessionConfiguration.default
             sessionConfig.timeoutIntervalForRequest = 10.0
             sessionConfig.timeoutIntervalForResource = 20.0
@@ -196,7 +272,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
                     do {
                         print(tempLocalUrl,local_url)
                         try FileManager.default.moveItem(at: tempLocalUrl!, to: local_url)
-                        self.loadedSCNS.append(local_url)
+                        self.loadedSCNS[commitId + "/" + file] = (local_url)
                     } catch {
                         print("failed to copy item")
                         print(error)
@@ -204,6 +280,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
                     
                 } else {
                     print("Failed")
+                }
+                
+                defer {
+                    group.leave()
                 }
             }
             
@@ -240,13 +320,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         sceneView.autoenablesDefaultLighting = true
         sceneView.automaticallyUpdatesLighting = true
     }
+    @IBAction func closeDrawerButton(_ sender: Any) {
+        drawerOpen = false
+        drawer.isHidden = true
+    }
+    
+    @IBOutlet weak var closeDrawerBtn: UIButton!
     
     // Anywhere in the air
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        drawerOpen = false
-        drawer.isHidden = true
         
         if !plane_only {
 
@@ -260,18 +343,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     }
     
     func addObject(position: SCNVector3){
-        
+    
         print(loadedSCNS)
         if (!loadedSCNS.isEmpty){
-            let object_path = loadedSCNS.randomElement()
             
-            
-            
+            if let object_path = loadedSCN {
             //        print(object_url)
             //        let object_path =  "art.scnassets/" + "model" + ".scn"
-            do {
+                do {
                 print(object_path)
-                let objectScene = try SCNScene.init(url: object_path!, options: nil)
+                let objectScene = try SCNScene.init(url: object_path , options: nil)
                 
                 let objectNode = objectScene.rootNode.childNodes[0]
                 let material = SCNMaterial()
@@ -306,6 +387,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
                 print(error)
             }
             
+        }
         }
     }
     
@@ -353,9 +435,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     
     @objc func addModelToSceneViewSurface(withGestureRecognizer recognizer: UIGestureRecognizer) {
         
-        drawerOpen = false
-        drawer.isHidden = true
-        
         if plane_only {
             let tapLocation = recognizer.location(in: sceneView)
             var hitTestResults = sceneView.hitTest(tapLocation, types: [.featurePoint,.existingPlaneUsingExtent])
@@ -368,17 +447,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
             let x = translation.x
             let y = translation.y
             let z = translation.z
-            print(loadedSCNS)
-            if (!loadedSCNS.isEmpty){
-                let object_path = loadedSCNS.randomElement()
-                
-                
-                
+            if (loadedSCN != nil){
+                let object_path = loadedSCN!
                 //        print(object_url)
                 //        let object_path =  "art.scnassets/" + "model" + ".scn"
                 do {
-                    print(object_path)
-                    let objectScene = try SCNScene.init(url: object_path!, options: nil)
+                    let objectScene = try SCNScene.init(url: object_path, options: nil)
                     
                     let objectNode = objectScene.rootNode.childNodes[0]
                     let material = SCNMaterial()
@@ -465,3 +539,28 @@ extension UIColor {
     }
 }
 
+var vSpinner : UIView?
+
+extension UIViewController {
+    func showSpinner(onView : UIView) {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        vSpinner = spinnerView
+    }
+    
+    func removeSpinner() {
+        DispatchQueue.main.async {
+            vSpinner?.removeFromSuperview()
+            vSpinner = nil
+        }
+    }
+}
