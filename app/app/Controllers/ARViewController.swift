@@ -15,7 +15,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     var tableViewList:[String] = []
     
     var selectedProjectIndex: Int = -1
-    var selectedCommitIndex: Int = -1
+    var selectedCommit: Commit? = nil
+    var branch: String = "master"
+    var loadedSCNS = [URL]()
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -80,7 +82,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
             drawer.isHidden = false
             drawerTitle.text = "Comments"
             commentInputView.isHidden = false;
-            tableViewList = DataManager.shared.projects[selectedProjectIndex].commits[selectedCommitIndex].comments
+            tableViewList = selectedCommit!.comments
             tableView.reloadData()
         }
     }
@@ -98,7 +100,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
             drawer.isHidden = false
             drawerTitle.text = "Commits"
             commentInputView.isHidden = false;
-            tableViewList = DataManager.shared.projects[selectedProjectIndex].commits.map{$0.message}
+            
+            let project = DataManager.shared.projects[selectedProjectIndex]
+            
+            let commits = CommitCalculator.getCommitsOfBranch(project: project, branch: branch)
+            
+            tableViewList = commits.map{$0.message}
             tableView.reloadData()
         }
     }
@@ -108,6 +115,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
             drawer.isHidden = false
             drawerTitle.text = "Files"
             commentInputView.isHidden = false;
+            tableViewList = selectedCommit!.files
+            tableView.reloadData()
         }
     }
     
@@ -139,6 +148,69 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         tableView.dataSource = self
         
         tableViewList = DataManager.shared.projects.map{$0.name}
+        
+        let project = DataManager.shared.projects[selectedProjectIndex]
+        
+        let basePath = "http://192.168.137.1:8080/" + project.id + "/" + selectedCommit!.id + "/"
+        
+        for fileName in selectedCommit!.files {
+            loadSCN(basePath + fileName)
+        }
+    }
+    
+    func loadSCN(_ fileUrl: String) {
+        if let url = URL(string: fileUrl) {
+            print(url)
+            
+            let sessionConfig = URLSessionConfiguration.default
+            sessionConfig.timeoutIntervalForRequest = 10.0
+            sessionConfig.timeoutIntervalForResource = 20.0
+            let session = URLSession(configuration: sessionConfig)
+            
+            let request = URLRequest(url: url)
+            
+            let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
+                if(tempLocalUrl != nil) {
+                    if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                        print("Successfully downloaded. Status code: \(statusCode)")
+                    }
+                    
+                    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+                    let documentsDirectory = paths[0]
+                    
+                    do {
+                        try FileManager.default.createDirectory(atPath: documentsDirectory.path, withIntermediateDirectories: true, attributes: nil)
+                    } catch {
+                        print(error)
+                    }
+                    
+                    let localUrl = documentsDirectory.appendingPathComponent(tempLocalUrl!.lastPathComponent)
+                    
+                    
+                    let local_url = localUrl
+                        .deletingPathExtension()
+                        .appendingPathExtension("scn")
+                    
+                    try? FileManager.default.removeItem(at: local_url)
+                    
+                    do {
+                        print(tempLocalUrl,local_url)
+                        try FileManager.default.moveItem(at: tempLocalUrl!, to: local_url)
+                        self.loadedSCNS.append(local_url)
+                    } catch {
+                        print("failed to copy item")
+                        print(error)
+                    }
+                    
+                } else {
+                    print("Failed")
+                }
+            }
+            
+            task.resume()
+        } else {
+            print("No URL")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -189,30 +261,51 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
     
     func addObject(position: SCNVector3){
         
-        let object = "ship"
-        let object_path =  "art.scnassets/" + object + ".scn"
-        guard let objectScene = SCNScene(named: object_path),
-            let objectNode = objectScene.rootNode.childNode(withName: object, recursively: false)
-            else { return }
-        
-        objectNode.position = position
-        
-        //Lighting
-        let spotLight = SCNLight()
-        spotLight.type = SCNLight.LightType.probe
-        spotLight.spotInnerAngle = 30.0
-        spotLight.spotOuterAngle = 80.0
-        spotLight.castsShadow = true
-        objectNode.light = spotLight
-        
-        objectNode.name = "air"
-        
-        //Add max 1 object
-        let childNodes = sceneView.scene.rootNode.childNodes
-        if (childNodes.isEmpty){
-            sceneView.scene.rootNode.addChildNode(objectNode)
-        } else{
-            sceneView.scene.rootNode.replaceChildNode(childNodes[0], with: objectNode)
+        print(loadedSCNS)
+        if (!loadedSCNS.isEmpty){
+            let object_path = loadedSCNS.randomElement()
+            
+            
+            
+            //        print(object_url)
+            //        let object_path =  "art.scnassets/" + "model" + ".scn"
+            do {
+                print(object_path)
+                let objectScene = try SCNScene.init(url: object_path!, options: nil)
+                
+                let objectNode = objectScene.rootNode.childNodes[0]
+                let material = SCNMaterial()
+                objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+                objectNode.scale = SCNVector3(x: 0.00254, y: 0.00254, z: 0.00254)
+                objectNode.eulerAngles = SCNVector3(x: 90, y: 90, z: 90)
+                //        guard let objectScene = try? SCNScene(url: object_path),
+                //            let objectNode = objectScene.rootNode.childNode(withName: object, recursively: false)
+                //            else { return }
+                
+                objectNode.position = position
+                
+                //Lighting
+                let spotLight = SCNLight()
+                spotLight.type = SCNLight.LightType.probe
+                spotLight.spotInnerAngle = 30.0
+                spotLight.spotOuterAngle = 80.0
+                spotLight.castsShadow = true
+                objectNode.light = spotLight
+                objectNode.name = "air"
+                
+                
+                //Add max 1 object
+                let childNodes = sceneView.scene.rootNode.childNodes
+                if (childNodes.isEmpty){
+                    sceneView.scene.rootNode.addChildNode(objectNode)
+                } else{
+                    sceneView.scene.rootNode.replaceChildNode(childNodes[0], with: objectNode)
+                }
+            } catch {
+                print("failed to make obj scene")
+                print(error)
+            }
+            
         }
     }
     
@@ -264,41 +357,63 @@ class ARViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate
         drawer.isHidden = true
         
         if plane_only {
-
             let tapLocation = recognizer.location(in: sceneView)
-            let hitTestResults = sceneView.hitTest(tapLocation, types: .existingPlaneUsingExtent)
+            var hitTestResults = sceneView.hitTest(tapLocation, types: [.featurePoint,.existingPlaneUsingExtent])
+            if (plane_only){
+                hitTestResults = sceneView.hitTest(tapLocation, types: .existingPlaneUsingExtent)
+            }
             
             guard let hitTestResult = hitTestResults.first else { return }
             let translation = hitTestResult.worldTransform.translation
             let x = translation.x
             let y = translation.y
             let z = translation.z
-            
-            let object = "ship"
-            let object_path =  "art.scnassets/" + object + ".scn"
-            guard let objectScene = SCNScene(named: object_path),
-                let objectNode = objectScene.rootNode.childNode(withName: object, recursively: false)
-                else { return }
-            
-            objectNode.position = SCNVector3(x,y,z)
-            
-            //Lighting
-            let spotLight = SCNLight()
-            spotLight.type = SCNLight.LightType.probe
-            spotLight.spotInnerAngle = 30.0
-            spotLight.spotOuterAngle = 80.0
-            spotLight.castsShadow = true
-            objectNode.light = spotLight
-
-            objectNode.position = SCNVector3(x,y,z)
-            objectNode.name = "surface"
-            
-            //Add max 1 object
-            let childNodes = sceneView.scene.rootNode.childNodes
-            if (childNodes.isEmpty){
-                sceneView.scene.rootNode.addChildNode(objectNode)
-            } else{
-                sceneView.scene.rootNode.replaceChildNode(childNodes[0], with: objectNode)
+            print(loadedSCNS)
+            if (!loadedSCNS.isEmpty){
+                let object_path = loadedSCNS.randomElement()
+                
+                
+                
+                //        print(object_url)
+                //        let object_path =  "art.scnassets/" + "model" + ".scn"
+                do {
+                    print(object_path)
+                    let objectScene = try SCNScene.init(url: object_path!, options: nil)
+                    
+                    let objectNode = objectScene.rootNode.childNodes[0]
+                    let material = SCNMaterial()
+                    objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+                    objectNode.scale = SCNVector3(x: 0.00254, y: 0.00254, z: 0.00254)
+                    objectNode.eulerAngles = SCNVector3(x: 90, y: 90, z: 90)
+                    //        guard let objectScene = try? SCNScene(url: object_path),
+                    //            let objectNode = objectScene.rootNode.childNode(withName: object, recursively: false)
+                    //            else { return }
+                    
+                    objectNode.position = SCNVector3(x,y,z)
+                    
+                    //Lighting
+                    let spotLight = SCNLight()
+                    spotLight.type = SCNLight.LightType.probe
+                    spotLight.spotInnerAngle = 30.0
+                    spotLight.spotOuterAngle = 80.0
+                    spotLight.castsShadow = true
+                    objectNode.light = spotLight
+                    objectNode.name = "surface"
+                    
+                    
+                    
+                    //Add max 1 object
+                    let childNodes = sceneView.scene.rootNode.childNodes
+                    if (childNodes.isEmpty){
+                        sceneView.scene.rootNode.addChildNode(objectNode)
+                    } else{
+                        sceneView.scene.rootNode.replaceChildNode(childNodes[0], with: objectNode)
+                    }
+                } catch {
+                    print("failed to make obj scene")
+                    print(error)
+                }
+                
             }
         }
 

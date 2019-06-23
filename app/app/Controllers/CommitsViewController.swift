@@ -37,7 +37,8 @@ class CommitsViewController: UIViewController, UITableViewDataSource, UITableVie
             let destinationViewController = segue.destination as! ARViewController
 
             destinationViewController.selectedProjectIndex = selectedProjectIndex as? Int ?? -1
-            destinationViewController.selectedCommitIndex = sender as? Int ?? -1
+            destinationViewController.selectedCommit = sender as? Commit
+            destinationViewController.branch = currentBranch
 
         }
     }
@@ -66,7 +67,7 @@ class CommitsViewController: UIViewController, UITableViewDataSource, UITableVie
         print("You tapped cell number \(indexPath.row).")
         tableView.deselectRow(at: indexPath, animated: true)
         
-        performSegue(withIdentifier: "ar", sender: selectedProjectIndex )
+        performSegue(withIdentifier: "ar", sender: currentCommits[indexPath.row] )
     }
 
     
@@ -94,6 +95,7 @@ class CommitsViewController: UIViewController, UITableViewDataSource, UITableVie
         
         branchPicker.delegate = self
         branchPicker.dataSource = self
+
     }
     
     
