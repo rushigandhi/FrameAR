@@ -1,6 +1,6 @@
-# FrameAR
+# FrameAR (Winner at EngHacks 2019)
 
-![Cruise Model](https://github.com/rushigandhi/FrameAR/graphics/boat.jpg "Cruise Model")
+![Cruise Model](https://raw.githubusercontent.com/rushigandhi/FrameAR/master/graphics/boat.jpg "Cruise Model")
 
 ## Inspiration
 
