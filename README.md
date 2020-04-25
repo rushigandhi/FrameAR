@@ -2,6 +2,8 @@
 
 ![Cruise Model](https://raw.githubusercontent.com/rushigandhi/FrameAR/master/graphics/boat.jpg "Cruise Model")
 
+[Check out the project on Devpost](https://devpost.com/software/framear)
+
 ## Inspiration
 
 Despite there being 40 million Sketckup, Maya and 3D software users in an industry worth over \$56 billion, mechanical engineers, architects, designers, etc, lack a way to instantly display and receive live edits on their 3D renderings or experience the full power of version control that us software engineers are so familiar with. FrameAR is a multi-platform application that fills this gap through the creation of a version control system where users can track live commits in slack and instantly view edits and their models in augmented reality with the full power of branches, comparisons and merging from the VCS. FrameAR looks to provide creative teams new and dynamic means of collaboration to interact with the newest, greatest technologies.
